@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অসমীয়াত পঢ়ক — Assamese TTS Reader</title>
+<meta name="description" content="AI-powered Assamese text-to-speech Chrome extension. Select any Assamese text on the web and hear it read aloud. By AAII & Xobdo.">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08080f;
+    --surface: #0f0f1a;
+    --surface2: #161625;
+    --border: #222238;
+    --text: #e8e8f0;
+    --text2: #9898b0;
+    --accent: #6c63ff;
+    --accent2: #4ecdc4;
+    --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --assamese: 'Noto Sans Assamese', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.7; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container { max-width: 840px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero { padding: 80px 0 60px; text-align: center; position: relative; }
+  .hero::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(108,99,255,0.08) 0%, transparent 70%); pointer-events: none; }
+  .logos { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 32px; }
+  .logos img { height: 40px; }
+  .logos .sep { color: var(--text2); font-size: 18px; font-weight: 300; }
+  .hero h1 { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+  .hero h1 .asm { font-family: var(--assamese); color: var(--accent); }
+  .hero .subtitle { font-size: 1.15rem; color: var(--text2); max-width: 560px; margin: 0 auto 12px; }
+  .hero .asm-intro { font-family: var(--assamese); font-size: 1rem; color: var(--accent2); margin-bottom: 32px; line-height: 1.8; }
+  .cta-row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-size: 1rem; font-weight: 600; transition: all 0.15s; border: none; cursor: pointer; font-family: var(--sans); }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #5a52e0; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(108,99,255,0.3); text-decoration: none; }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--accent); text-decoration: none; }
+
+  /* Features */
+  .features { padding: 60px 0; }
+  .features h2 { font-size: 1.6rem; text-align: center; margin-bottom: 40px; font-weight: 700; }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .feature-card .icon { font-size: 28px; margin-bottom: 12px; }
+  .feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+  .feature-card p { font-size: 0.9rem; color: var(--text2); line-height: 1.6; }
+
+  /* How it works */
+  .how { padding: 60px 0; }
+  .how h2 { font-size: 1.6rem; text-align: center; margin-bottom: 40px; font-weight: 700; }
+  .steps { display: flex; flex-direction: column; gap: 16px; max-width: 600px; margin: 0 auto; }
+  .step { display: flex; gap: 16px; align-items: flex-start; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .step-num { width: 36px; height: 36px; background: var(--accent); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; }
+  .step-text { font-size: 0.95rem; }
+  .step-text .asm { font-family: var(--assamese); color: var(--accent2); display: block; margin-top: 2px; font-size: 0.9rem; }
+
+  /* Tech */
+  .tech { padding: 60px 0; border-top: 1px solid var(--border); }
+  .tech h2 { font-size: 1.6rem; text-align: center; margin-bottom: 20px; font-weight: 700; }
+  .tech p { text-align: center; color: var(--text2); font-size: 0.95rem; max-width: 640px; margin: 0 auto 16px; }
+  .tech-tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  .tag { padding: 6px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; color: var(--text2); }
+
+  /* Footer */
+  .footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
+  .footer-logos { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 16px; }
+  .footer-logos img { height: 32px; opacity: 0.7; }
+  .footer p { font-size: 0.85rem; color: var(--text2); }
+  .footer a { color: var(--accent2); }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2rem; }
+    .hero { padding: 50px 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <section class="hero">
+    <div class="logos">
+      <img src="images/aaii-logo.jpeg" alt="AAII অসম">
+      <span class="sep">×</span>
+      <img src="images/xobdo-logo.png" alt="Xobdo.org">
+    </div>
+    <h1><span class="asm">অসমীয়া পঢ়ক</span></h1>
+    <p class="subtitle">AI-powered Assamese text-to-speech for the web. Select any Assamese text and hear it read aloud — entirely in your browser.</p>
+    <p class="asm-intro">যিকোনো ৱেবপেজত অসমীয়া লিখনি চিলেক্ট কৰক আৰু শুনক।<br>AI-ৰ সহায়ত অসমীয়া ভাষাত পঢ়ি শুনাব — সম্পূৰ্ণ আপোনাৰ ব্ৰাউজাৰতে চলে।</p>
+    <div class="cta-row">
+      <a href="#" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+        Install Chrome Extension
+      </a>
+      <a href="https://github.com/aaii-axom" class="btn btn-outline">GitHub</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">🔊</div>
+        <h3>Select & Listen</h3>
+        <p>Highlight any Assamese text on any webpage. Click the "পঢ়ক" button that appears to hear it read aloud.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📄</div>
+        <h3>Full Page Reading</h3>
+        <p>Right-click anywhere → "সম্পূৰ্ণ পৃষ্ঠা পঢ়ক" to read an entire article. Great for Wikipedia, news, blogs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔒</div>
+        <h3>Runs Locally</h3>
+        <p>All processing happens in your browser. No data sent to any server. Works offline after first model download.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🧠</div>
+        <h3>AI-Powered</h3>
+        <p>Built with FastSpeech2 + Multi-Band MelGAN, trained on natural Assamese speech data. Natural-sounding voice.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔢</div>
+        <h3>Smart Text Processing</h3>
+        <p>Automatically converts numbers to Assamese words (১৫২৪ → এক হাজাৰ পাঁচশ চৌবিশ), cleans HTML and references.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⚡</div>
+        <h3>Sentence Streaming</h3>
+        <p>Reads sentence by sentence with visual highlighting. No waiting for the entire text to synthesize.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>How to Use</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Install the extension from Chrome Web Store (or sideload the .crx file)<span class="asm">Chrome Web Store-ৰ পৰা ইনষ্টল কৰক</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Click the extension icon and press "Load Models" (one-time download, ~50MB)<span class="asm">এক্সটেনচন আইকনত ক্লিক কৰক → "Load Models" টিপক</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Go to any page with Assamese text. Select text → click the "🔊 পঢ়ক" button<span class="asm">অসমীয়া লিখনি চিলেক্ট কৰক → "পঢ়ক" বুটাম টিপক</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">For full page: right-click → "সম্পূৰ্ণ পৃষ্ঠা পঢ়ক". A progress bar appears at the bottom.<span class="asm">সম্পূৰ্ণ পৃষ্ঠা শুনিবলৈ ৰাইট-ক্লিক কৰক</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tech">
+    <h2>Technology</h2>
+    <p>অসমীয়া পঢ়ক uses state-of-the-art neural text-to-speech models running entirely in the browser via ONNX Runtime Web (WebAssembly). No server, no API calls, no data collection.</p>
+    <p>The models were trained on Assamese speech data as part of a collaboration between the Assam AI Initiative (AAII) and Xobdo.org.</p>
+    <div class="tech-tags">
+      <span class="tag">FastSpeech2</span>
+      <span class="tag">Multi-Band MelGAN</span>
+      <span class="tag">ONNX Runtime Web</span>
+      <span class="tag">WebAssembly</span>
+      <span class="tag">Chrome Extension (MV3)</span>
+      <span class="tag">ESPnet</span>
+    </div>
+  </section>
+<section class="tech">
+  <h2>Privacy Policy</h2>
+
+  <p><strong>No Data Collection:</strong> অসমীয়া পঢ়ক does not collect, store, sell, or transmit any personal or sensitive user data. It does not track browsing activity or store user interaction data.</p>
+
+  <p><strong>Local Processing:</strong> All text-to-speech processing happens locally in your browser using WebAssembly (ONNX Runtime Web). Selected text is processed only on your device and is never sent to any external server.</p>
+
+  <p><strong>Permissions Usage:</strong> The extension uses limited permissions strictly for its core functionality. contextMenus is used to provide options for reading selected text or full webpage content. storage is used to save user preferences such as playback speed locally in the browser. offscreen is used to enable background audio playback and model execution.</p>
+
+  <p><strong>Website Access:</strong> Access to webpages is required only to detect user-selected Assamese text and enable reading functionality. The extension does not collect, monitor, or transmit browsing data.</p>
+
+  <p><strong>Third-Party Services:</strong> This extension does not use external APIs, analytics tools, or third-party tracking services. All processing is performed locally within the browser.</p>
+
+  <p><strong>Contact:</strong> For questions or support, please contact: your-email@example.com</p>
+
+  <p><strong>Updates:</strong> This privacy policy may be updated from time to time to reflect improvements or changes in functionality.</p>
+</section>
+  <footer class="footer">
+    <div class="footer-logos">
+      <a href="https://aaii-axom.github.io/"><img src="images/aaii-logo.jpeg" alt="AAII"></a>
+      <a href="https://www.xobdo.org/"><img src="images/xobdo-logo.png" alt="Xobdo"></a>
+    </div>
+    <p>A collaborative project by <a href="https://aaii-axom.github.io/">Assam AI Initiative (AAII)</a> & <a href="https://www.xobdo.org/">Xobdo.org</a></p>
+    <p style="margin-top:8px;font-size:0.8rem;opacity:0.5">Open source. Made with ❤️ for the Assamese community.</p>
+  </footer>
+</div>
+
+</body>
+</html>
